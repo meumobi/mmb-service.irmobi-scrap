@@ -1,0 +1,18 @@
+{
+  "name": "irmobi-scrap",
+  "description": "Scrap website",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "vdias38 <victor.dias@meumobi.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
