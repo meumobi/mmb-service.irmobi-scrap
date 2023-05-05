@@ -1,6 +1,64 @@
-# mmb-service.irmobi-scrap
+# mmb-service.website-scraper
 
-## Requirements
+The aim of this project is to scrape a websites, extract out useful information and export it in XML format.
+
+Extract and result structure are made by a specific provider on `./providers/`. Then the result is finally converted to XML on generic `index.js`.
+
+Below an example of XML result produced by `./providers/TRI-events.js`.
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<events>
+   <event id="26500">
+      <title>Lorem ipsum</title>
+      <start_date>2023-11-14 00:00:00</start_date>
+      <end_date>2023-11-15 00:00:00</end_date>
+      <where />
+      <description />
+   </event>
+</events>
+```
+
+## Getting started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequesities
+
+#### Install packages
+
+```sh
+$ npm install
+```
+
+#### Setup env vars
+
+```sh
+$ echo "WEBPAGE_URL=https://webpage-to-scrap" >> .env
+```
+
+- `WEBPAGE_URL`: mandatory
+- `UUID_NAMESPACE`: optional // https://www.uuidgenerator.net/
+  - example `UUID_NAMESPACE = '1b671a64-40d5-491e-99b0-da01ff1f3341'`;
+
+
+### Run locally
+
+```sh
+$ node index.js
+```
+
+With Node.js v19.0.0 and v18.11.0+ you can [run node in ‘watch’ mode](https://nodejs.org/en/blog/announcements/v19-release-announce#node---watch-experimental) using the node `--watch` option. Running in ‘watch’ mode restarts the process when an imported file is changed.
+
+## Running the tests
+
+```sh
+$ npm run test
+```
+
+## Deployment
+
+See below how to [deploy NodeJS service on Google Cloud Run](https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-nodejs-service).
 
 ### Install the gloud cli
 
@@ -20,37 +78,18 @@ Downloads % exec -l $SHELL
 Select your Google cloud account and project
 
 ```sh
- mmb-service.irmobi-scrap % gcloud init
+% gcloud init
 ```
 
-## Deploy a Node.js service to Cloud Run
-
-https://cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-nodejs-service
-
-1. Create a simple Hello World application
-1. Package the app into a container image
-1. Upload the container image to Container Registry
-1. Then deploy the container image to Cloud Run.
-
-## Deploy on Google Cloud Run
+### Deploy on Google Cloud Run
 
  [Deploy new services and new revisions to Cloud Run directly from source code](https://cloud.google.com/run/docs/deploying-source-code) using a single gcloud CLI command, gcloud run deploy with the --source flag.
 
 ```sh
- % gcloud run deploy irmobi-scrap --source .
- API [run.googleapis.com] not enabled on project [971061791161]. Would you like to enable and retry (this will take a few minutes)? (y/N)?  y
+mmb-service.irmobi-scrap % gcloud config set run/region southamerica-east1 
+mmb-service.irmobi-scrap % gcloud run deploy irmobi-scrap --source .
+API [run.googleapis.com] not enabled on project [971061791161]. Would you like to enable and retry (this will take a few minutes)? (y/N)?  y
 
-Enabling service [run.googleapis.com] on project [971061791161]...
-Please specify a region:
- [1] asia-east1
- [2] asia-east2
-...
- [27] southamerica-east1
- [28] southamerica-west1
- [29] us-central1
-...
- [38] cancel
-Please enter numeric choice or text value (must exactly match list item):  27
 API [artifactregistry.googleapis.com] not enabled on project [971061791161]. Would you like to enable and retry (this will take a few minutes)? (y/N)?  y
 
 Enabling service [artifactregistry.googleapis.com] on project [971061791161]...
@@ -77,14 +116,14 @@ Building using Dockerfile and deploying container to Cloud Run service [irmobi-s
   ✓ Setting IAM Policy...                                                                                                                                                    
 Done.                                                                                                                                                                        
 Service [irmobi-scrap] revision [irmobi-scrap-00001-wal] has been deployed and is serving 100 percent of traffic.
-Service URL: https://irmobi-scrap-brd7cebqvq-rj.a.run.app
+Service URL: https://irmobi-scrap-loremipsum-rj.a.run.app
 %
 ```
 
-## Use environment variables
+### Use environment variables on Google Cloud Run
 
 https://cloud.google.com/run/docs/configuring/environment-variables#setting-services
 
 ```sh
-mmb-service.irmobi-scrap % gcloud run services update irmobi-scrap --set-env-vars "NAME=vdias38"
+% gcloud run services update irmobi-scrap --set-env-vars "WEBPAGE_URL=..." --set-env-vars "UUID_NAMESPACE=..."
 ````
